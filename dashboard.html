@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6558f5">
+  <title>My Workspace — TaskFlow</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-page">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand brand-link" href="index.html">Task<span>Flow</span><i class="brand-dot"></i></a>
+      <p class="subtitle">YOUR PERSONAL WORKSPACE</p>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav>
+        <button class="nav-item active" data-filter="all"><span>▦</span> All Tasks <kbd>⌘ 1</kbd></button>
+        <button class="nav-item" data-filter="today"><span>☀</span> Today</button>
+        <button class="nav-item" data-filter="pending"><span>◷</span> Pending</button>
+        <button class="nav-item" data-filter="completed"><span>✓</span> Completed</button>
+      </nav>
+      <div class="sidebar-tip"><div class="tip-spark">✦</div><strong>Little steps add up.</strong><p>Keep showing up for the things that matter to you.</p></div>
+      <div class="sidebar-footer"><span class="status-dot"></span><span id="connectionStatus">Connecting…</span><a href="index.html">← Home</a></div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">YOUR SPACE TO FOCUS</div><h1 id="greeting">Let's make today count<span> ✨</span></h1><p id="dateText"></p></div>
+        <div class="top-actions"><button class="icon-action" id="themeBtn" title="Toggle color theme" aria-label="Toggle color theme">☾</button><button class="secondary-btn export-btn" id="exportBtn">↓ Export</button><button class="primary-btn" id="addTaskBtn">＋ New task</button></div>
+      </header>
+      <section class="welcome-banner"><div><span class="banner-label">A NOTE TO YOURSELF</span><h2>You don't have to do it all.<br><span>Just start with one thing.</span></h2><p>Small steps are still steps forward. You've got this.</p></div><div class="banner-illustration"><div class="banner-orbit"></div><div class="banner-sun">✦</div><div class="banner-leaf">❋</div></div></section>
+      <section class="stats">
+        <article class="stat-card stat-total"><div class="stat-top"><span>Total tasks</span><span class="stat-icon">▦</span></div><strong id="totalCount">0</strong><small>Everything on your plate</small></article>
+        <article class="stat-card stat-pending"><div class="stat-top"><span>Still in progress</span><span class="stat-icon">◷</span></div><strong id="pendingCount">0</strong><small>One step at a time</small></article>
+        <article class="stat-card stat-completed"><div class="stat-top"><span>You've done it!</span><span class="stat-icon">✓</span></div><strong id="completedCount">0</strong><small>Every win counts</small></article>
+        <article class="stat-card stat-progress"><div class="stat-top"><span>Completion</span><span class="stat-icon">↗</span></div><strong id="progressCount">0%</strong><div class="mini-track"><span id="progressBar"></span></div></article>
+      </section>
+      <section class="tasks-heading"><div><h2>Your task list</h2><p>Make space for your next small win.</p></div><span class="task-count" id="visibleCount">0 tasks</span></section>
+      <section class="toolbar">
+        <div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Search tasks, categories..." aria-label="Search tasks"></div>
+        <select id="priorityFilter" aria-label="Filter by priority"><option value="all">All priorities</option><option value="urgent">Urgent priority</option><option value="high">High priority</option><option value="medium">Medium priority</option><option value="low">Low priority</option><option value="someday">Someday</option></select>
+        <select id="sortSelect" aria-label="Sort tasks"><option value="created">Recently added</option><option value="due">Due date</option><option value="priority">Priority</option></select>
+      </section>
+      <section class="planner-row" aria-label="Daily planner widgets">
+        <article class="calendar-card">
+          <div class="widget-heading"><div><span class="widget-kicker">YOUR LITTLE PLANNER</span><h3>Calendar peek</h3></div><span class="widget-icon">▦</span></div>
+          <div class="calendar-top"><button type="button" id="calendarPrev" aria-label="Previous month">‹</button><strong id="calendarMonth">Month Year</strong><button type="button" id="calendarNext" aria-label="Next month">›</button></div>
+          <div class="calendar-grid calendar-weekdays"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+          <div class="calendar-grid" id="calendarDays" aria-label="Calendar dates"></div>
+          <p class="calendar-caption"><span class="calendar-dot"></span> Today is your fresh start.</p>
+        </article>
+        <article class="focus-card"><img src="images/focus-planner.svg" alt="Illustration of a colorful planner, calendar, and stars"/><div><span class="widget-kicker">A GENTLE REMINDER</span><h3>Progress over perfection.</h3><p>You don't need a perfect plan. You just need your next small step.</p><button type="button" class="focus-add" id="focusAddBtn">＋ Add a task</button></div></article>
+      </section>
+      <section id="taskList" class="task-list"></section>
+      <div id="emptyState" class="empty-state hidden"><div class="empty-icon">✦</div><h2 id="emptyTitle">Your next win starts here</h2><p id="emptyMessage">Add a task to get your momentum going.</p><button class="primary-btn" id="emptyAddBtn">＋ Add your first task</button></div>
+      <footer class="dashboard-footer"><span>Made for your everyday wins <span>✦</span></span><span>One thing at a time.</span></footer>
+    </main>
+  </div>
+  <div class="modal hidden" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><div class="modal-header"><div><span class="eyebrow">MAKE IT HAPPEN</span><h2 id="modalTitle">Add a new task</h2></div><button class="icon-btn" id="closeModalBtn" aria-label="Close dialog">&times;</button></div><form id="taskForm"><input type="hidden" id="taskId"><label>Task title<input id="title" required maxlength="120" placeholder="e.g. Finish project report"></label><label>Description <span class="optional">(optional)</span><textarea id="description" rows="3" maxlength="1000" placeholder="Add a few helpful details..."></textarea></label><div class="form-grid"><label>Due date<input id="dueDate" type="date"></label><label>Priority<select id="priority"><option value="someday">Someday</option><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option><option value="urgent">Urgent</option></select></label></div><label>Category <span class="optional">(optional)</span><input id="category" maxlength="40" placeholder="College, personal, work..."></label><div class="form-actions"><button type="button" class="secondary-btn" id="cancelBtn">Cancel</button><button type="submit" class="primary-btn">Save task <span>→</span></button></div></form></div></div>
+  <div class="toast hidden" id="toast" role="status"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
